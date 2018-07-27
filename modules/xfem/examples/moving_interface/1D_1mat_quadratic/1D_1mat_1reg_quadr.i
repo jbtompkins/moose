@@ -1,42 +1,22 @@
 [GlobalParams]
-  order = FIRST
+  order = SECOND
   family = LAGRANGE
 []
 
 [Mesh]
-  type = GeneratedMesh
-  dim = 2 
-  nx = 20
-  ny = 5 
-  xmin = 0 
-  xmax = 1.0 
-  ymin = 0 
-  ymax = 0.5 
-  elem_type = QUAD4
-[]
-
-[XFEM]
-  qrule = volfrac
-  output_cut_plane = true
-[]
-
-[UserObjects]
-  [./level_set_cut_uo]
-    type = LevelSetCutUserObject
-    level_set_var = ls
-    heal_always = true
-  [../]
+  type = GenerateMesh
+  dim = 2
+  nx = 1
+  ny = 1
+  xmin = 0.0
+  xmax = 1.0
+  ymin = 0.0
+  ymax = 0.5
+  elem_type = QUAD8
 []
 
 [Variables]
   [./u]
-  [../]
-[]
-
-[AuxVariables]
-  [./ls]
-    order = FIRST
-    family = LAGRANGE
   [../]
 []
 
@@ -57,22 +37,10 @@
   [../]
 []
 
-[AuxKernels]
-  [./ls_function]
-    type = FunctionAux
-    variable = ls
-    function = ls_func
-  [../]
-[]
-
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '(10*300+1.5*t*75*pi^2)*cos(pi*x/2)+400'
-  [../]
-  [./ls_func]
-    type = ParsedFunction
-    value = 'arctan(1-(x-0.04)-0.2*t)'
+    value = '10*(-200*x^2+200)+400*1.5*t'
   [../]
 []
 
@@ -82,7 +50,6 @@
     prop_names = 'rhoCp'
     prop_values = 10
   [../]
-
   [./therm_cond_prop]
     type = GenericConstantMaterial
     prop_names = 'diffusion_coefficient'
@@ -104,6 +71,14 @@
   [../]
 []
 
+[ICs]
+  [./u_ic]
+    type = ConstantIC
+    value = 400
+    variable = u
+  [../]
+[]
+
 [Executioner]
   type = Transient
   solve_type = 'PJFNK'
@@ -121,7 +96,7 @@
   start_time = 0.0
   dt = 0.1
   end_time = 2.0
-  max_xfem_update = 1
+  # max_xfem_update = 1
 []
 
 [Outputs]
@@ -129,8 +104,8 @@
   execute_on = timestep_end
   exodus = true
   [./console]
-    type = Console
+    type = console
     perf_log = true
-    output_linear = true
+    perf_log = output_linear = true
   [../]
 []
