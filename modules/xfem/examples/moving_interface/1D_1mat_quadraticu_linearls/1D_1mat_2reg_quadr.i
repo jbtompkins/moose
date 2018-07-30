@@ -1,10 +1,21 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# XFEM Moving Interface Verification Problem #01.0
+# 1D, 1 material, 2 regions, xy, 2nd order elements
+# Companion Problems: #00.0
+# This problem is primarily meant to verify that the determination of where the
+#   interface cut is performed is a linear interpolation between level set 
+#   function values at nodes. It is identical to its companion problem with the
+#   exception of the level set function used being linear instead of the arctan
+#   function in problem #00.0.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
 [GlobalParams]
   order = SECOND
   family = LAGRANGE
 []
 
 [Mesh]
-  type = GenerateMesh
+  type = GeneratedMesh
   dim = 2
   nx = 1
   ny = 1
@@ -15,8 +26,28 @@
   elem_type = QUAD8
 []
 
+[XFEM]
+  qrule = volfrac
+  output_cut_plane = true
+[]
+
+[UserObjects]
+  [./level_set_cut_uo]
+    type = LevelSetCutUserObject
+    level_set_var = ls
+    heal_always = true
+  [../]
+[]
+
 [Variables]
   [./u]
+  [../]
+[]
+
+[AuxVariables]
+  [./ls]
+    order = SECOND
+    family = LAGRANGE
   [../]
 []
 
@@ -37,10 +68,32 @@
   [../]
 []
 
+[AuxKernels]
+  [./ls_function]
+    type = FunctionAux
+    variable = ls
+    function = ls_func
+  [../]
+[]
+
+[Constraints]
+  [./xfem_constraint]
+    type = XFEMSingleVariableConstraint
+    variable = u
+    jump = 0
+    jumpflux = 0
+    geometric_cut_userobject = 'level_set_cut_uo'
+  [../]
+[]
+
 [Functions]
   [./src_func]
     type = ParsedFunction
     value = '10*(-200*x^2+200)+400*1.5*t'
+  [../]
+  [./ls_func]
+    type = ParsedFunction
+    value = '1-(x-0.04)-0.2*t'
   [../]
 []
 
@@ -96,7 +149,7 @@
   start_time = 0.0
   dt = 0.1
   end_time = 2.0
-  # max_xfem_update = 1
+  max_xfem_update = 1
 []
 
 [Outputs]
@@ -104,8 +157,8 @@
   execute_on = timestep_end
   exodus = true
   [./console]
-    type = console
+    type = Console
     perf_log = true
-    perf_log = output_linear = true
+    output_linear = true
   [../]
 []

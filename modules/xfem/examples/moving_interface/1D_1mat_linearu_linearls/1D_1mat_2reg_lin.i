@@ -1,10 +1,24 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# XFEM Moving Interface Verification Problem #02.0
+# 1D, 1 material, 2 regions, xy, 1st order element
+# Companion Problems: #02.1
+# A simple single element heat transfer problem designed with the Method of 
+#   Manufactured Solutions to have a linear temperature profile. After the
+#   results of Problem #00.0 showed that the XFEM module does not have the
+#   capability to preserve 2nd order elements in enriched elements, this 
+#   problem was developed to further investigate differences in MOOSE
+#   solutions on linear elements and XFEM performance. Both the temperature
+#   solution and level set function are chosen to be linear to attempt to 
+#   minimize error between the MOOSE/exact solution and XFEM results.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
 [GlobalParams]
-  order = SECOND
+  order = FIRST
   family = LAGRANGE
 []
 
 [Mesh]
-  type = GenerateMesh
+  type = GeneratedMesh
   dim = 2
   nx = 1
   ny = 1
@@ -12,7 +26,7 @@
   xmax = 1.0
   ymin = 0.0
   ymax = 0.5
-  elem_type = QUAD8
+  elem_type = QUAD4
 []
 
 [XFEM]
@@ -35,7 +49,7 @@
 
 [AuxVariables]
   [./ls]
-    order = SECOND
+    order = FIRST
     family = LAGRANGE
   [../]
 []
@@ -71,17 +85,18 @@
     variable = u
     jump = 0
     jumpflux = 0
+    geometric_cut_userobject = 'level_set_cut_uo'
   [../]
 []
 
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '10*(-200*x^2+200)+400*1.5*t'
+    value = '10*(-200*x+200)'
   [../]
   [./ls_func]
     type = ParsedFunction
-    value = 'atan(1-(x-0.04)-0.2*t)'
+    value = '1-(x-0.04)-0.2*t'
   [../]
 []
 
@@ -145,8 +160,8 @@
   execute_on = timestep_end
   exodus = true
   [./console]
-    type = console
+    type = Console
     perf_log = true
-    perf_log = output_linear = true
+    output_linear = true
   [../]
 []
