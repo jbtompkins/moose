@@ -1,10 +1,16 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# XFEM Moving Interface Verification Problem #02.1
-# 1D, 1 material, 1 regions, xy, 1st order elements
-# Companion Problems: #02.0
-# This is another simple, single element transient heat transfer problem. The
-#   problem is designed using the Method of Manufactured Solutions to be able
-#   to be exactly evaluated by MOOSE on linear elements.
+# XFEM Moving Interface Verification Problem #0.0.0.0.02
+# Dimensionality:                                         1D
+# Coordinate System:                                      xy
+# Material Numbers/Types:               1 material, 2 region
+# Element Order:                                         2nd
+# Companion Problems:                            #0.0.0.0.00
+# Interface Characteristics: u independent, prescribed linear level set function
+# This problem is primarily meant to verify that the determination of where the
+#   interface cut is performed is a linear interpolation between level set 
+#   function values at nodes. It is identical to its companion problem with the
+#   exception of the level set function used being linear instead of the arctan
+#   function in problem #00.0.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -24,8 +30,28 @@
   elem_type = QUAD8
 []
 
+[XFEM]
+  qrule = volfrac
+  output_cut_plane = true
+[]
+
+[UserObjects]
+  [./level_set_cut_uo]
+    type = LevelSetCutUserObject
+    level_set_var = ls
+    heal_always = true
+  [../]
+[]
+
 [Variables]
   [./u]
+  [../]
+[]
+
+[AuxVariables]
+  [./ls]
+    order = SECOND
+    family = LAGRANGE
   [../]
 []
 
@@ -46,10 +72,32 @@
   [../]
 []
 
+[AuxKernels]
+  [./ls_function]
+    type = FunctionAux
+    variable = ls
+    function = ls_func
+  [../]
+[]
+
+[Constraints]
+  [./xfem_constraint]
+    type = XFEMSingleVariableConstraint
+    variable = u
+    jump = 0
+    jumpflux = 0
+    geometric_cut_userobject = 'level_set_cut_uo'
+  [../]
+[]
+
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '10*(-200*x+200)'
+    value = '10*(-200*x^2+200)+400*1.5*t'
+  [../]
+  [./ls_func]
+    type = ParsedFunction
+    value = '1-(x-0.04)-0.2*t'
   [../]
 []
 
@@ -67,17 +115,11 @@
 []
 
 [BCs]
-#  [./left_u]
-#    type = NeumannBC
-#    variable = u
-#    boundary = 'left'
-#    value = 300 
-#  [../]
   [./left_u]
     type = NeumannBC
     variable = u
     boundary = 'left'
-    value = 0
+  [../]
   [./right_u]
     type = DirichletBC
     variable = u
@@ -111,7 +153,7 @@
   start_time = 0.0
   dt = 0.1
   end_time = 2.0
-  # max_xfem_update = 1
+  max_xfem_update = 1
 []
 
 [Outputs]

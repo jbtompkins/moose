@@ -1,7 +1,11 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# XFEM Moving Interface Verification Problem #02.0
-# 1D, 1 material, 2 regions, xy, 1st order element
-# Companion Problems: #02.1
+# XFEM Moving Interface Verification Problem #0.0.0.0.03
+# Dimensionality:                                         1D
+# Coordinate System:                                      xy
+# Material Numbers/Types:               1 material, 2 region
+# Element Order:                                         1st
+# Companion Problems:                            #0.0.0.0.04
+# Interface Characteristics: u independent, prescribed linear level set function 
 # A simple single element heat transfer problem designed with the Method of 
 #   Manufactured Solutions to have a linear temperature profile. After the
 #   results of Problem #00.0 showed that the XFEM module does not have the

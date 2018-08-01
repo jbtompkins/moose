@@ -1,7 +1,11 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# XFEM Moving Interface Verification Problem #00.0
-# 1D, 1 material, 2 regions, xy, 2nd order elements
-# Companion Problems: #00.1
+# XFEM Moving Interface Verification Problem #0.0.0.0.00
+# Dimensionality:                                         1D
+# Coordinate System:                                      xy
+# Material Numbers/Types:               1 material, 2 region
+# Element Order:                                         2nd
+# Companion Problems:                            #0.0.0.0.01
+# Interface Characteristics: u independent, prescribed arctan level set function
 # The purpose of this problem is as an initial investigation into XFEM
 #   capabilities. It is designed in conjuction with its companion problem
 #   to illustrate the effect and errors introduced by cutting the mesh and 

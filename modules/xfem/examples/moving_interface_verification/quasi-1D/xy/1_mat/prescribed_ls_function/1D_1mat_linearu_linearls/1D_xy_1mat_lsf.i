@@ -1,12 +1,13 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# XFEM Moving Interface Verification Problem #00.1
-# 1D, 1 material, 1 region, xy, 2nd order elements
-# Companion Problems: #00.0
-# This is a transient heat conduction problem solved by the MOOSE framework.
-#   It serves as a basis for comparison of the vanilla FEM code to the XFEM
-#   module. The problem was designed using the Method of Manufactured
-#   Solutions, and with a quadratic solution on 2nd order elements, MOOSE 
-#   solves the problem exactly.
+# XFEM Moving Interface Verification Problem #0.0.0.0.04
+# Dimensionality:                                         1D
+# Coordinate System:                                      xy
+# Material Numbers/Types:               1 material, 1 region
+# Element Order:                                         1st
+# Companion Problems:                            #0.0.0.0.03
+# This is another simple, single element transient heat transfer problem. The
+#   problem is designed using the Method of Manufactured Solutions to be able
+#   to be exactly evaluated by MOOSE on linear elements.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -51,7 +52,7 @@
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '10*(-200*x^2+200)+400*1.5*t'
+    value = '10*(-200*x+200)'
   [../]
 []
 
@@ -69,11 +70,17 @@
 []
 
 [BCs]
+#  [./left_u]
+#    type = NeumannBC
+#    variable = u
+#    boundary = 'left'
+#    value = 300 
+#  [../]
   [./left_u]
     type = NeumannBC
     variable = u
     boundary = 'left'
-  [../]
+    value = 0
   [./right_u]
     type = DirichletBC
     variable = u
