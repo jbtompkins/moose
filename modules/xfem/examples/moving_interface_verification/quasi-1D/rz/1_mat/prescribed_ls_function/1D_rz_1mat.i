@@ -1,30 +1,35 @@
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# XFEM Moving Interface Verification Problem #0.0.0.0.04
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# XFEM Moving Interface Verification Problem #0.1.0.0.01
 # Dimensionality:                                         1D
-# Coordinate System:                                      xy
+# Coordinate System:                                      rz
 # Material Numbers/Types:               1 material, 1 region
 # Element Order:                                         1st
-# Companion Problems:                            #0.0.0.0.03
-# This is another simple, single element transient heat transfer problem. The
-#   problem is designed using the Method of Manufactured Solutions to be able
-#   to be exactly evaluated by MOOSE on linear elements.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# Companion Problems:                            #0.1.0.0.00
+# This is a single element transient heat transfer problem in cylindrical 
+#   coordinates designed using the Method of Manufactured Solutions to be
+#   able to be exactly evaluated by MOOSE on linear elements.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
-  order = SECOND
+  order = FIRST
   family = LAGRANGE
+[]
+
+[Problem]
+  coord_type = RZ
 []
 
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 1
+  nx = 10
   ny = 1
-  xmin = 0.0
-  xmax = 1.0
+  # Is this the right syntax for RZ coordinates?
+  xmin = 1.0
+  xmax = 2.0
   ymin = 0.0
   ymax = 0.5
-  elem_type = QUAD8
+  elem_type = QUAD4
 []
 
 [Variables]
@@ -52,7 +57,11 @@
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '10*(-200*x+200)'
+    value = '10*(-200*x+200) + 200*1.5*t/x'
+  [../]
+  [./neumann_func]
+    type = ParsedFunction
+    value = '1.5*200*t'
   [../]
 []
 
@@ -70,17 +79,12 @@
 []
 
 [BCs]
-#  [./left_u]
-#    type = NeumannBC
-#    variable = u
-#    boundary = 'left'
-#    value = 300 
-#  [../]
   [./left_u]
-    type = NeumannBC
+    type = FunctionNeumannBC
     variable = u
     boundary = 'left'
-    value = 0
+    function = neumann_func
+  [../]
   [./right_u]
     type = DirichletBC
     variable = u
@@ -106,7 +110,7 @@
   petsc_options_value = 'lu'
   line_search = 'none'
 
-  l_tol = 1.0e-3
+  l_tol = 1.0e-6
   nl_max_its = 15
   nl_rel_tol = 1.0e-10
   nl_abs_tol = 1.0e-9

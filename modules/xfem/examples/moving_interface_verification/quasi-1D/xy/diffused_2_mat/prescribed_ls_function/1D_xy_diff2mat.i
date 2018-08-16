@@ -1,19 +1,15 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# XFEM Moving Interface Verification Problem #0.0.0.0.03
+# XFEM Moving Interface Verification Problem #0.0.1.0.01
 # Dimensionality:                                         1D
 # Coordinate System:                                      xy
-# Material Numbers/Types:               1 material, 2 region
+# Material Numbers/Types:      diffused 2 material, 2 region
 # Element Order:                                         1st
-# Companion Problems:                            #0.0.0.0.04
-# Interface Characteristics: u independent, prescribed linear level set function 
-# A simple single element heat transfer problem designed with the Method of 
-#   Manufactured Solutions to have a linear temperature profile. After the
-#   results of Problem #00.0 showed that the XFEM module does not have the
-#   capability to preserve 2nd order elements in enriched elements, this 
-#   problem was developed to further investigate differences in MOOSE
-#   solutions on linear elements and XFEM performance. Both the temperature
-#   solution and level set function are chosen to be linear to attempt to 
-#   minimize error between the MOOSE/exact solution and XFEM results.
+# Companion Problems:                            #0.0.1.0.00
+# A simple, single element transient heat transfer problem with a linear 
+#   solution. The heat transfer coefficient 'k' is dependent on the level set
+#   function used in the XFEM companion problem to define the interface
+#   position. The problem is designed using MMS to be able to be exactly
+#   evaluated on linear elements. 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -33,28 +29,8 @@
   elem_type = QUAD4
 []
 
-[XFEM]
-  qrule = moment_fitting
-  output_cut_plane = true
-[]
-
-[UserObjects]
-  [./level_set_cut_uo]
-    type = LevelSetCutUserObject
-    level_set_var = ls
-    heal_always = true
-  [../]
-[]
-
 [Variables]
   [./u]
-  [../]
-[]
-
-[AuxVariables]
-  [./ls]
-    order = FIRST
-    family = LAGRANGE
   [../]
 []
 
@@ -75,36 +51,20 @@
   [../]
 []
 
-[AuxKernels]
-  [./ls_function]
-    type = FunctionAux
-    variable = ls
-    function = ls_func
-  [../]
-[]
-
-[Constraints]
-  [./xfem_constraint]
-    type = XFEMSingleVariableConstraint
-    variable = u
-    jump = 0
-    jumpflux = 0
-    geometric_cut_userobject = 'level_set_cut_uo'
-  [../]
-[]
-
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '10*(-200*x+200)'
-  [../]
-  [./ls_func]
-    type = ParsedFunction
-    value = '1-(x-0.04)-0.2*t'
+    value = 'rhoCp*(-200*x+200)-(0.05*200*t/1.04)'
+    vars = 'rhoCp'
+    vals = 10
   [../]
   [./neumann_func]
     type = ParsedFunction
-    value = '1.5*200*t'
+    value = '((0.05/1.04)*(1-(x-0.04)-0.2*t) + 1.5)*200*t'
+  [../]
+  [./k_func]
+    type = ParsedFunction
+    value = '(0.05/1.04)*(1-(x-0.04)-0.2*t) + 1.5'
   [../]
 []
 
@@ -115,9 +75,9 @@
     prop_values = 10
   [../]
   [./therm_cond_prop]
-    type = GenericConstantMaterial
+    type = GenericFunctionMaterial
     prop_names = 'diffusion_coefficient'
-    prop_values = 1.5
+    prop_values = 'k_func'
   [../]
 []
 
@@ -161,7 +121,7 @@
   start_time = 0.0
   dt = 0.1
   end_time = 2.0
-  max_xfem_update = 1
+  # max_xfem_update = 1
 []
 
 [Outputs]
