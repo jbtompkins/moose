@@ -7,7 +7,7 @@
 # Companion Problems:                            #0.1.0.0.00
 # This is a single element transient heat transfer problem in cylindrical 
 #   coordinates designed using the Method of Manufactured Solutions to be
-#   able to be exactly evaluated by MOOSE on linear elements.
+#   able to be exactly evaluated by MOOSE.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -22,7 +22,7 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
+  nx = 1
   ny = 1
   xmin = 1.0
   xmax = 2.0
@@ -56,7 +56,7 @@
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '10*(-200*x+200) + 200*1.5*t/x'
+    value = '10*(-200*x+400) + 200*1.5*t/x'
   [../]
   [./neumann_func]
     type = ParsedFunction
@@ -122,7 +122,7 @@
 
 [Outputs]
   interval = 1
-  execute_on = timestep_end
+  execute_on = 'initial timestep_end'
   exodus = true
   [./console]
     type = Console
