@@ -80,7 +80,7 @@
     type = XFEMSingleVariableConstraint
     variable = u
     jump = 0
-    jumpflux = 0
+    jump_flux = 0
     geometric_cut_userobject = 'level_set_cut_uo'
   [../]
 []
@@ -164,7 +164,7 @@
 
 [Outputs]
   interval = 1
-  execute_on = timestep_end
+  execute_on = 'initial timestep_end'
   exodus = true
   [./console]
     type = Console

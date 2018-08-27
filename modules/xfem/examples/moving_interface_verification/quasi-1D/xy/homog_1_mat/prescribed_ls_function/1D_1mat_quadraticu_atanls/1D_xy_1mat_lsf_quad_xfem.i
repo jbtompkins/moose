@@ -165,11 +165,10 @@
 
 [Outputs]
   interval = 1
-  execute_on = timestep_end
+  execute_on = 'initial timestep_end'
   exodus = true
   [./console]
     type = Console
-    perf_log = true
     output_linear = true
   [../]
 []

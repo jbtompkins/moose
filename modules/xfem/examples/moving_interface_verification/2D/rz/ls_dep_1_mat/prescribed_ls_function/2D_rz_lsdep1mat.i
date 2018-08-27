@@ -1,14 +1,10 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# XFEM Moving Interface Verification Problem #1.0.0.0.00
+# XFEM Moving Interface Verification Problem #1.1.1.0.01
 # Dimensionality:                                         2D
-# Coordinate System:                                      xy
-# Material Numbers/Types:   homogeneous 1 material, 2 region
+# Coordinate System:                                      rz
+# Material Numbers/Types: level set dep 1 material, 1 region
 # Element Order:                                         1st
-# Companion Problems:                            #1.0.0.0.01
-# Interface Characteristics: u independent, prescribed level set function
-# Transient 2D heat conduction problem in Cartesian coordinates. This problem
-#   features a basic moving interface (u independent, prescribed level set
-#   function) sweeping across the x-y coordinates in a homogeneous material.
+# Companion Problems:                            #1.1.1.0.00
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -16,40 +12,24 @@
   family = LAGRANGE
 []
 
+[Problem]
+  coord_type = RZ
+[]
+
 [Mesh]
   type = GeneratedMesh
   dim = 2
   nx = 1
   ny = 1
-  xmin = 0.0
-  xmax = 1.0
-  ymin = 0.0
-  ymax = 1.0
+  xmin = 1.0
+  xmax = 2.0
+  ymin = 1.0
+  ymax = 2.0
   elem_type = QUAD4
-[]
-
-[XFEM]
-  qrule = moment_fitting
-  output_cut_plane = true
-[]
-
-[UserObjects]
-  [./level_set_cut_uo]
-    type = LevelSetCutUserObject
-    level_set_var = ls
-    heal_always = true
-  [../]
 []
 
 [Variables]
   [./u]
-  [../]
-[]
-
-[AuxVariables]
-  [./ls]
-    order = FIRST
-    family = LAGRANGE
   [../]
 []
 
@@ -70,44 +50,27 @@
   [../]
 []
 
-[AuxKernels]
-  [./ls_function]
-    type = FunctionAux
-    variable = ls
-    function = ls_func
-  [../]
-[]
-
-[Constraints]
-  [./xfem_constraints]
-    type = XFEMSingleVariableConstraint
-    variable = u
-    jump = 0
-    jump_flux = 0
-    geometric_cut_userobject = 'level_set_cut_uo'
-  [../]
-[]
-
 [Functions]
   [./src_func]
     type = ParsedFunction
-    value = '10*(-100*x-100*y+200)'
+    value = '10*(-100*x-100*y+400) + t*(-2.5*y/(2.04*x) + 155/x - t/(2.04*x) 
+            - 7.5/2.04)'
   [../]
   [./neumann_func]
     type = ParsedFunction
-    value = '1.5*100*t'
+    value = '((0.01/2.04)*(-2.5*x-2.5*y-t)+1.55)*100*t'
   [../]
   [./dirichlet_right_func]
     type = ParsedFunction
-    value = '(-100*y+100)*t+400'
+    value = '(-100*y+200)*t+400'
   [../]
   [./dirichlet_top_func]
     type = ParsedFunction
-    value = '(-100*x+100)*t+400'
+    value = '(-100*x+200)*t+400'
   [../]
-  [./ls_func]
+  [./k_func]
     type = ParsedFunction
-    value = '-0.5*(x+y) + 1.04 - 0.2*t'
+    value = '(0.01/2.04)*(-2.5*x-2.5*y-t)+1.55'
   [../]
 []
 
@@ -118,9 +81,9 @@
     prop_values = 10
   [../]
   [./therm_cond_prop]
-    type = GenericConstantMaterial
+    type = GenericFunctionMaterial
     prop_names = 'diffusion_coefficient'
-    prop_values = 1.5
+    prop_values = 'k_func'
   [../]
 []
 
@@ -176,7 +139,7 @@
   start_time = 0.0
   dt = 0.1
   end_time = 2.0
-  max_xfem_update = 1
+  # max_xfem_update = 1
 []
 
 [Outputs]

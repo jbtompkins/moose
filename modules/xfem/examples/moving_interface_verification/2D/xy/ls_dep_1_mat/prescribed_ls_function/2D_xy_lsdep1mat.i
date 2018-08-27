@@ -16,7 +16,7 @@
   type = GeneratedMesh
   dim = 2
   nx = 1
-  ny =1
+  ny = 1
   xmin = 0.0
   xmax = 1.0
   ymin = 0.0
@@ -139,7 +139,7 @@
 
 [Outputs]
   interval = 1
-  execute_on = timestep_end
+  execute_on = 'initial timestep_end'
   exodus = true
   [./console]
     type = Console
