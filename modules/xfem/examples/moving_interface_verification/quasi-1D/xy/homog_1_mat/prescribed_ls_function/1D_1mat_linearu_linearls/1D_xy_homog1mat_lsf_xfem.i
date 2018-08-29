@@ -88,7 +88,7 @@
     type = XFEMSingleVariableConstraint
     variable = u
     jump = 0
-    jumpflux = 0
+    jump_flux = 0
     geometric_cut_userobject = 'level_set_cut_uo'
   [../]
 []
