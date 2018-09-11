@@ -82,9 +82,9 @@
   [./xfem_constraints]
     type = XFEMSingleVariableConstraint
     variable = u
-    jump = 0
-    jump_flux = 0
     geometric_cut_userobject = 'level_set_cut_uo'
+    use_penalty = true
+    alpha = 1e5
   [../]
 []
 

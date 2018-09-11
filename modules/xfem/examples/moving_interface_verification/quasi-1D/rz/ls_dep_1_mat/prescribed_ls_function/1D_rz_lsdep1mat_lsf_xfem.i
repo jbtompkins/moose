@@ -85,9 +85,9 @@
   [./xfem_constraint]
     type = XFEMSingleVariableConstraint
     variable = u
-    jump = 0
-    jump_flux = 0
     geometric_cut_userobject = 'level_set_cut_uo'
+    use_penalty = true
+    alpha = 1e5
   [../]
 []
 
@@ -106,7 +106,7 @@
   [../]
   [./ls_func]
     type = ParsedFunction
-    value = '2.04 - x - 0.2*t'
+    value = '2.04 - x -0.2*t'
   [../]
 []
 
