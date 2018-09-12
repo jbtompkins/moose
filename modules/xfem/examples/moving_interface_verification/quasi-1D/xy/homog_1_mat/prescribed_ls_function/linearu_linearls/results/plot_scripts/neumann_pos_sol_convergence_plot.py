@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ### Data Extraction
-conv_data = np.genfromtxt('../Neumann_pos_sols/neumann_pos_sols.csv',delimiter=',')
-conv_data[:,1] -= 800.
+conv_data = np.genfromtxt('../Neumann_pos_sols/1D_xy_h1m_neumann_pos_sols.csv',delimiter=',')
+conv_data[:,1] = abs(conv_data[:,1]-800.)
 
 ### Plot data
 savdir = '../../doc/figures/'
