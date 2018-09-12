@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 ### Class Definitions
 
-def u_func(x,t):
-  return (-200.*x + 200.)*t + 400.
+def u_func(x,y,t):
+  return (-100.*x - 100.*y + 200.)*t + 400.
 
 ### Data Extraction
 # Setup storage arrays
@@ -16,10 +16,10 @@ ts = np.arange(0.3,2.01,0.1)
 # Extract Data
 for i in range(0,len(ts)):
   xfem_01_temp = np.genfromtxt(
-    '../u_solutions/nx1/1D_xy_homog1mat_lsf_xfem_nx01-0.'+str(i+3)+'.csv',
+    '../u_solutions/nx1ny1/2D_xy_homog1mat_lsf_xfem_nx1ny1-0.'+str(i+3)+'.csv',
     delimiter=',',skip_header=1)
   xfem_04_temp = np.genfromtxt(
-    '../u_solutions/nx4/1D_xy_homog1mat_lsf_xfem_nx04-0.'+str(i+3)+'.csv',
+    '../u_solutions/nx4ny4/1D_xy_homog1mat_lsf_xfem_nx4ny4-0.'+str(i+3)+'.csv',
     delimiter=',',skip_header=1)
 
   # Sort extracted data by x value
