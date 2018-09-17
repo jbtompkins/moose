@@ -77,9 +77,16 @@
 []
 
 [Constraints]
-  [./xfem_constraints]
+  [./xfem_u_constraint]
     type = XFEMSingleVariableConstraint
     variable = u
+    geometric_cut_userobject = 'level_set_cut_uo'
+    use_penalty = true
+    alpha = 1e5
+  [../]
+  [./xfem_ls_constraint]
+    type = XFEMSingleVariableConstraint
+    variable = phi
     geometric_cut_userobject = 'level_set_cut_uo'
     use_penalty = true
     alpha = 1e5
