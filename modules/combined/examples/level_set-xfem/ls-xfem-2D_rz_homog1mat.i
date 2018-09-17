@@ -50,8 +50,9 @@
 
 [Kernels]
   [./heat_cond]
-    type = HeatConduction
+    type = MatDiffusion
     variable = u
+    D_name = 'diffusion_coefficient'
   [../]
   [./vol_heat_src]
     type = BodyForce
@@ -59,9 +60,8 @@
     function = src_func
   [../]
   [./mat_time_deriv]
-    type = MatTimeDerivative
+    type = HeatConductionTimeDerivative
     variable = u
-    mat_prop_value = rhoCp
   [../]
 
   [./phi_advection]
@@ -112,13 +112,13 @@
 [Materials]
   [./mat_time_deriv_prop]
     type = GenericConstantMaterial
-    prop_names = 'rhoCp'
-    prop_values = 10
+    prop_names = 'specific_heat density'
+    prop_values = '1 10'
   [../]
   [./therm_cond_prop]
     type = GenericConstantMaterial
     prop_names = 'diffusion_coefficient'
-    prop_values = 1.5
+    prop_values = '1.5'
   [../]
 []
 
