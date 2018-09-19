@@ -13,14 +13,14 @@ len_list_x04 = []
 # Extract Data
 for i in range(0,4):
   # Extract MOOSE/Analytical solution data
-  moos_04_temp = np.genfromtxt('../u_solutions/nx4ny4/2D_xy_homog1mat_nx4ny4-0.'
+  moos_04_temp = np.genfromtxt('../u_solutions/nx4ny4/2D_rz_homog1mat_nx4ny4-0.'
     +tstep_num[i]+'.csv',delimiter=',',skip_header=1)
   # Extract XFEM nx=1 solution data
   xfem_01_temp = np.genfromtxt(
-    '../u_solutions/nx1ny1/2D_xy_homog1mat_lsf_xfem_nx1ny1-0.'+tstep_num[i]+
+    '../u_solutions/nx1ny1/2D_rz_homog1mat_lsf_xfem_nx1ny1-0.'+tstep_num[i]+
     '.csv',delimiter=',',skip_header=1)
   xfem_04_temp = np.genfromtxt(
-    '../u_solutions/nx4ny4/2D_xy_homog1mat_lsf_xfem_nx4ny4-0.'+tstep_num[i]+
+    '../u_solutions/nx4ny4/2D_rz_homog1mat_lsf_xfem_nx4ny4-0.'+tstep_num[i]+
     '.csv',delimiter=',',skip_header=1)
 
   # Remove duplicate u solution entries
@@ -49,22 +49,24 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 #ax.plot_trisurf(moos_04_data[0,:,1],moos_04_data[0,:,2],moos_04_data[0,:,0], 
 #  cmap='cool', edgecolor='none')
-ax.plot_trisurf(xfem_04_data[0,:,1],xfem_04_data[0,:,2],xfem_04_data[0,:,0],
+ax.plot_trisurf(xfem_04_data[0,:len_list_x04[0],1],
+  xfem_04_data[0,:len_list_x04[0],2],xfem_04_data[0,:len_list_x04[0],0],
   cmap='cool', edgecolor='none')
 ax.plot_trisurf(xfem_01_data[0,:,1],xfem_01_data[0,:,2],xfem_01_data[0,:,0],
   cmap='jet', edgecolor='none')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
-ax.set_zlim3d(398,510)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_05.png')
+ax.set_zlim(398,510)
+plt.savefig(savedir+'2D_rz_homog1mat_u_vs_x_05.png')
 
 # t = 1.0
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 #ax.plot_trisurf(moos_04_data[1,:,1],moos_04_data[1,:,2],moos_04_data[1,:,0], 
 #  cmap='cool', edgecolor='none')
-ax.plot_trisurf(xfem_04_data[1,:,1],xfem_04_data[1,:,2],xfem_04_data[1,:,0],
+ax.plot_trisurf(xfem_04_data[1,:len_list_x04[1],1],
+  xfem_04_data[1,:len_list_x04[1],2],xfem_04_data[1,:len_list_x04[1],0],
   cmap='cool', edgecolor='none')
 ax.plot_trisurf(xfem_01_data[1,:,1],xfem_01_data[1,:,2],xfem_01_data[1,:,0],
   cmap='jet', edgecolor='none')
@@ -72,34 +74,40 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
 ax.set_zlim3d(398,660)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_10.png')
+plt.savefig(savedir+'2D_rz_homog1mat_u_vs_x_10.png')
 
 # t = 1.5
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 #ax.plot_trisurf(moos_04_data[2,:,1],moos_04_data[2,:,2],moos_04_data[2,:,0], 
 #  cmap='cool', edgecolor='none')
-ax.plot_trisurf(xfem_04_data[2,:,1],xfem_04_data[2,:,2],xfem_04_data[2,:,0],
+ax.plot_trisurf(xfem_04_data[2,:len_list_x04[2],1],
+  xfem_04_data[2,:len_list_x04[2],2],xfem_04_data[2,:len_list_x04[2],0],
   cmap='cool', edgecolor='none')
 ax.plot_trisurf(xfem_01_data[2,:,1],xfem_01_data[2,:,2],xfem_01_data[2,:,0],
   cmap='jet', edgecolor='none')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
+ax.set_xlim3d(1,2.1)
+ax.set_ylim3d(1,2.1)
 ax.set_zlim3d(398,800)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_15.png')
+plt.savefig(savedir+'2D_rz_homog1mat_u_vs_x_15.png')
 
 # t = 2.0
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 #ax.plot_trisurf(moos_04_data[3,:,1],moos_04_data[3,:,2],moos_04_data[3,:,0], 
 #  cmap='cool', edgecolor='none')
-ax.plot_trisurf(xfem_04_data[3,:,1],xfem_04_data[3,:,2],xfem_04_data[3,:,0],
+ax.plot_trisurf(xfem_04_data[3,:len_list_x04[3],1],
+  xfem_04_data[3,:len_list_x04[3],2],xfem_04_data[3,:len_list_x04[3],0],
   cmap='cool', edgecolor='none')
 ax.plot_trisurf(xfem_01_data[3,:,1],xfem_01_data[3,:,2],xfem_01_data[3,:,0],
   cmap='jet', edgecolor='none')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
+ax.set_xlim3d(1,2.1)
+ax.set_ylim3d(1,2.1)
 ax.set_zlim3d(398,920)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_20.png')
+plt.savefig(savedir+'2D_rz_homog1mat_u_vs_x_20.png')

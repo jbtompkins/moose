@@ -13,14 +13,14 @@ len_list_x04 = []
 # Extract Data
 for i in range(0,4):
   # Extract MOOSE/Analytical solution data
-  moos_04_temp = np.genfromtxt('../u_solutions/nx4ny4/2D_xy_homog1mat_nx4ny4-0.'
+  moos_04_temp = np.genfromtxt('../u_solutions/nx4ny4/2D_xy_ls1mat_nx4ny4-0.'
     +tstep_num[i]+'.csv',delimiter=',',skip_header=1)
   # Extract XFEM nx=1 solution data
   xfem_01_temp = np.genfromtxt(
-    '../u_solutions/nx1ny1/2D_xy_homog1mat_lsf_xfem_nx1ny1-0.'+tstep_num[i]+
+    '../u_solutions/nx1ny1/2D_xy_ls1mat_lsf_xfem_nx1ny1-0.'+tstep_num[i]+
     '.csv',delimiter=',',skip_header=1)
   xfem_04_temp = np.genfromtxt(
-    '../u_solutions/nx4ny4/2D_xy_homog1mat_lsf_xfem_nx4ny4-0.'+tstep_num[i]+
+    '../u_solutions/nx4ny4/2D_xy_ls1mat_lsf_xfem_nx4ny4-0.'+tstep_num[i]+
     '.csv',delimiter=',',skip_header=1)
 
   # Remove duplicate u solution entries
@@ -57,7 +57,7 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
 ax.set_zlim3d(398,510)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_05.png')
+plt.savefig(savedir+'2D_xy_ls1mat_u_vs_x_05.png')
 
 # t = 1.0
 fig = plt.figure()
@@ -72,7 +72,7 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
 ax.set_zlim3d(398,660)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_10.png')
+plt.savefig(savedir+'2D_xy_ls1mat_u_vs_x_10.png')
 
 # t = 1.5
 fig = plt.figure()
@@ -87,7 +87,7 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
 ax.set_zlim3d(398,800)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_15.png')
+plt.savefig(savedir+'2D_xy_ls1mat_u_vs_x_15.png')
 
 # t = 2.0
 fig = plt.figure()
@@ -102,4 +102,4 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('u')
 ax.set_zlim3d(398,920)
-plt.savefig(savedir+'2D_xy_homog1mat_u_vs_x_20.png')
+plt.savefig(savedir+'2D_xy_ls1mat_u_vs_x_20.png')

@@ -20,10 +20,10 @@ ts = np.arange(0.3,2.01,0.1)
 # Extract Data
 for i in range(0,len(ts)):
   xfem_01_temp = np.genfromtxt(
-    '../u_solutions/nx1ny1/2D_xy_homog1mat_lsf_xfem_nx1ny1-0.'+str(i+3)+'.csv',
+    '../u_solutions/nx1ny1/2D_rz_homog1mat_lsf_xfem_nx1ny1-0.'+str(i+3)+'.csv',
     delimiter=',',skip_header=1)
   xfem_04_temp = np.genfromtxt(
-    '../u_solutions/nx4ny4/2D_xy_homog1mat_lsf_xfem_nx4ny4-0.'+str(i+3)+'.csv',
+    '../u_solutions/nx4ny4/2D_rz_homog1mat_lsf_xfem_nx4ny4-0.'+str(i+3)+'.csv',
     delimiter=',',skip_header=1)
 
   # Remove duplicate u solution entries
@@ -82,7 +82,7 @@ plt.legend(handles=[x_01_err],loc='best')
 plt.xlabel('Time')
 plt.ylabel('L2 Error Norm')
 plt.ticklabel_format(axis='y',style='sci',scilimits=(1,2))
-plt.savefig(savdir+'2D_xy_homog1mat_nx1ny1_L2_Errs.png')
+plt.savefig(savdir+'2D_rz_homog1mat_nx1ny1_L2_Errs.png')
 
 # Plot L2 Error Norm for nx=4
 plt.figure()
@@ -91,5 +91,5 @@ plt.legend(handles=[x_04_err],loc='best')
 plt.xlabel('Time')
 plt.ylabel('L2 Error Norm')
 plt.ticklabel_format(axis='y',style='sci',scilimits=(1,2))
-plt.savefig(savdir+'2D_xy_homog1mat_nx4ny4_L2_Errs.png')
+plt.savefig(savdir+'2D_rz_homog1mat_nx4ny4_L2_Errs.png')
 
