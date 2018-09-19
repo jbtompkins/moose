@@ -55,19 +55,19 @@
 
 
 \begin{document}
-%	
+%
 
 \title[XFEM Moving Interface Verification]{Extended Finite Element Method Development \& Application for Simulation of Moving Interface \& Boundary Phenomena}
 \author[Tompkins]{James B. Tompkins \\ Chair: Dr. Ryan G. McClarren \\ Co-chair: Dr. Jean C. Ragusa \\ Committee: Drs. J.N. Reddy \& Lin Shao}
 \institute[TAMU]{Texas A\&M University}
 %\committee[McClarren,Arroyave,Ragusa,Shao,Hales]{Dr. Ryan McClarren \\ Dr. Raymundo Arr\'{o}yave \\ Dr. Jean Ragusa \\ Dr. Lin Shao \\ Dr. Jason Hales}
-\date[July 18, 2018]
+\date[Sept 19, 2018]
 
 % ###############################################################################
 \section{1D XY Homog}
 \subsection{}
 % ###############################################################################
-\begin{frame}[t]\frametitle{1D, Cartesian, Homogeneous Material Problem Description}
+\begin{frame}[t]\frametitle{1D, Cartesian, Homogeneous 1 Material Problem Description}
   \begin{block}{PDE}
     $\rho c_p\frac{\partial T}{\partial t} - \nabla k \nabla T = \rho c_p\frac{\partial T}{\partial t} - \frac{\partial}{\partial x} k \frac{\partial T}{\partial x}= q$
   \end{block}
@@ -100,105 +100,65 @@
   \end{block}
 \end{frame}
 
-%\begin{frame}\frametitle{Numerical Parameters}
-%  	\begin{columns}
-%		\column{0.32\linewidth}
-%			\begin{center}
-%			\includegraphics[scale=0.66]{figures/Screen-GlobalParams}
-%			\end{center}
-%		\column{0.66\linewidth}
-%			\begin{center}
-%			\includegraphics[scale=0.66]{figures/Screen-Executioner}
-%			\end{center}
-%	\end{columns}
-%	\begin{center}
-%	\includegraphics[scale=0.66]{figures/Screen-Constraints}
-%	\end{center}
-%\end{frame}
-%
-%\begin{frame}[t]\frametitle{Computational Results}
-%  	\begin{columns}
-%		\column{0.48\linewidth}
-%			\begin{center}
-%			\includegraphics[scale=0.09]{figures/comp_sol_0p5}\\
-%			$t=0.5$
-%			
-%			\null
-%			
-%			\includegraphics[scale=0.09]{figures/comp_sol_1p0}\\
-%			$t=1.0$
-%			\end{center}
-%		\column{0.48\linewidth}
-%			\begin{center}
-%			\includegraphics[scale=0.09]{figures/comp_sol_1p5}\\
-%			$t=1.5$			
-%			
-%			\null
-%			
-%			\includegraphics[scale=0.09]{figures/comp_sol_2p0}\\
-%			$t=2.0$
-%			\end{center}
-%	\end{columns}
-%\end{frame}
-%
-%\begin{frame}[t]\frametitle{Results Comparison}
-%  	\begin{columns}
-%		\column{0.48\linewidth}
-%			\begin{center}
-%			\includegraphics[scale=0.17]{figures/compare_solves_0p5}\\
-%			$t=0.5$
-%			
-%			\null
-%			
-%			\includegraphics[scale=0.17]{figures/compare_solves_1p0}\\
-%			$t=1.0$
-%			\end{center}
-%		\column{0.48\linewidth}
-%			\begin{center}
-%			\includegraphics[scale=0.17]{figures/compare_solves_1p5}\\
-%			$t=1.5$			
-%			
-%			\null
-%			
-%			\includegraphics[scale=0.17]{figures/compare_solves_2p0}\\
-%			$t=2.0$
-%			\end{center}
-%	\end{columns}
-%\end{frame}
-%
-%\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
-%	\begin{center}
-%		\includegraphics[scale=0.4]{figures/L2_err_norms}
-%	\end{center}
-%\end{frame}
-%
-%\begin{frame}[t]\frametitle{XFEM Cut Location Distance from Actual Interface Position vs Time}
-%	\begin{center}
-%		\includegraphics[scale=0.4]{figures/interface_dist}
-%	\end{center}
-%\end{frame}
-%
-%\begin{frame}[t]\frametitle{Interface Cut Location: Calculated or Interpolated?}
-%	\begin{center}
-%		\includegraphics[scale=0.4]{figures/interface_comp}
-%	\end{center}
-%\end{frame}
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_xy_h1m/Screen-GlobalParams-1Dxyh1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_xy_h1m/Screen-Executioner-1Dxyh1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/1D_xy_h1m/Screen-Constraints-1Dxyh1m}
+	\end{center}
+\end{frame}
 
-%\begin{frame}[t]\frametitle{Mesh Refinement: L2 Error Norms at Each Timestep}
-%	\begin{center}
-%		\includegraphics[scale=0.4]{figures/L2_err_norms_comp_dx}
-%	\end{center}
-%\end{frame}
-%
-%\begin{frame}[t]\frametitle{Mesh Refinement: XFEM Cut Location Distance from Actual Interface Position vs Time}
-%	\begin{center}
-%		\includegraphics[scale=0.4]{figures/interface_dist_comp_dx}
-%	\end{center}
-%\end{frame}
+\begin{frame}[t]\frametitle{Results Comparison}
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_xy_h1m/1D_xy_homog1mat_u_vs_x_05}\\
+			$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_xy_h1m/1D_xy_homog1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_xy_h1m/1D_xy_homog1mat_u_vs_x_15}\\
+			$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_xy_h1m/1D_xy_homog1mat_u_vs_x_20}\\
+			$t=2.0$
+			\end{center}
+	\end{columns}
+\end{frame}
 
-%\begin{frame}[t]\frametitle{Conclusions}
-%
-%\end{frame}
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_xy_h1m/1D_xy_homog1mat_nx1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_xy_h1m/1D_xy_homog1mat_nx4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=0}
+	\begin{center}
+		\includegraphics[scale=0.4]{figures/1D_xy_h1m/1D_xy_homog1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 % ###############################################################################
 \section{1D XY LS Dep}
@@ -238,6 +198,65 @@
   \end{block}
 \end{frame}
 
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_xy_ls1m/Screen-GlobalParams-1Dxyls1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_xy_ls1m/Screen-Executioner-1Dxyls1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/1D_xy_ls1m/Screen-Constraints-1Dxyls1m}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results Comparison}
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_xy_ls1m/1D_xy_ls1mat_u_vs_x_05}\\
+			$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_xy_ls1m/1D_xy_ls1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_xy_ls1m/1D_xy_ls1mat_u_vs_x_15}\\
+			$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_xy_ls1m/1D_xy_ls1mat_u_vs_x_20}\\
+			$t=2.0$
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_xy_ls1m/1D_xy_ls1mat_nx1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_xy_ls1m/1D_xy_ls1mat_nx4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=0}
+	\begin{center}
+		\includegraphics[scale=0.4]{figures/1D_xy_ls1m/1D_xy_ls1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 % ###############################################################################
 \section{1D RZ Homog}
@@ -276,6 +295,65 @@
   \end{block}
 \end{frame}
 
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_rz_h1m/Screen-GlobalParams-1Drzh1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_rz_h1m/Screen-Executioner-1Drzh1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/1D_rz_h1m/Screen-Constraints-1Drzh1m}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results Comparison}
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_rz_h1m/1D_rz_homog1mat_u_vs_x_05}\\
+			$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_rz_h1m/1D_rz_homog1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_rz_h1m/1D_rz_homog1mat_u_vs_x_15}\\
+			$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_rz_h1m/1D_rz_homog1mat_u_vs_x_20}\\
+			$t=2.0$
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_rz_h1m/1D_rz_homog1mat_nx1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_rz_h1m/1D_rz_homog1mat_nx4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=1}
+	\begin{center}
+		\includegraphics[scale=0.4]{figures/1D_rz_h1m/1D_rz_homog1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 % ###############################################################################
 \section{1D RZ LS Dep}
@@ -315,6 +393,65 @@
   \end{block}
 \end{frame}
 
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_rz_ls1m/Screen-GlobalParams-1Drzls1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/1D_rz_ls1m/Screen-Executioner-1Drzls1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/1D_rz_ls1m/Screen-Constraints-1Drzls1m}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results Comparison}
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_rz_ls1m/1D_rz_ls1mat_u_vs_x_05}\\
+			$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_rz_ls1m/1D_rz_ls1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.17]{figures/1D_rz_ls1m/1D_rz_ls1mat_u_vs_x_15}\\
+			$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.17]{figures/1D_rz_ls1m/1D_rz_ls1mat_u_vs_x_20}\\
+			$t=2.0$
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_rz_ls1m/1D_rz_ls1mat_nx1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.3]{figures/1D_rz_ls1m/1D_rz_ls1mat_nx4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=1}
+	\begin{center}
+		\includegraphics[scale=0.4]{figures/1D_rz_ls1m/1D_rz_ls1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 % ###############################################################################
 \section{2D XY Homog}
@@ -330,7 +467,7 @@
   
   \begin{block}{Domain/Material Properties}
   	$[\Omega_x,\Omega_y] = [[0,1],[0,1]]$ \\
-  	$\rho cs_p = 10$ \\
+  	$\rho c_p = 10$ \\
   	$k=1.5$
   \end{block}
 \end{frame}
@@ -362,6 +499,66 @@
   \end{block}
 \end{frame}
 
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_h1m/Screen-GlobalParams-2Dxyh1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_h1m/Screen-Executioner-2Dxyh1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/2D_xy_h1m/Screen-Constraints-2Dxyh1m}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results Comparison}
+  Upper plane is nx=1, ny=1; lower plane is nx=4, ny=4
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_xy_h1m/2D_xy_homog1mat_u_vs_x_05}\\
+			\tiny$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_xy_h1m/2D_xy_homog1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_xy_h1m/2D_xy_homog1mat_u_vs_x_15}\\
+			\tiny$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_xy_h1m/2D_xy_homog1mat_u_vs_x_20}\\
+			$t=2.0$ \normalsize
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_h1m/2D_xy_homog1mat_nx1ny1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_h1m/2D_xy_homog1mat_nx4ny4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=0,y=0}
+	\begin{center}
+		\includegraphics[scale=0.5]{figures/2D_xy_h1m/2D_xy_homog1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 % ###############################################################################
 \section{2D XY LS Dep}
@@ -377,7 +574,7 @@
   
   \begin{block}{Domain/Material Properties}
   	$[\Omega_x,\Omega_y] = [[0,1],[0,1]]$ \\
-  	$\rho cs_p = 10$ \\
+  	$\rho c_p = 10$ \\
   	$k(x,y,t) = \left(\frac{0.05}{1.04} \right)\phi(x,y,t) +1.5 = \left(\frac{0.01}{1.04}\right)
   	(-2.5x - 2.5y - t) + 1.55$
   \end{block}
@@ -412,6 +609,66 @@
   \end{block}
 \end{frame}
 
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_ls1m/Screen-GlobalParams-2Dxyls1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_ls1m/Screen-Executioner-2Dxyls1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/2D_xy_ls1m/Screen-Constraints-2Dxyls1m}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results Comparison}
+  Upper plane is nx=1, ny=1; lower plane is nx=4, ny=4
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_xy_ls1m/2D_xy_ls1mat_u_vs_x_05}\\
+			\tiny$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_xy_ls1m/2D_xy_ls1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_xy_ls1m/2D_xy_ls1mat_u_vs_x_15}\\
+			\tiny$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_xy_ls1m/2D_xy_ls1mat_u_vs_x_20}\\
+			$t=2.0$
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_ls1m/2D_xy_ls1mat_nx1ny1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_xy_ls1m/2D_xy_ls1mat_nx4ny4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=0}
+	\begin{center}
+		\includegraphics[scale=0.5]{figures/2D_xy_ls1m/2D_xy_ls1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 % ###############################################################################
 \section{2D RZ Homog}
@@ -427,7 +684,7 @@
   
   \begin{block}{Domain/Material Properties}
   	$[\Omega_r,\Omega_z] = [[1,2],[1,2]]$ \\
-  	$\rho cs_p = 10$ \\
+  	$\rho c_p = 10$ \\
   	$k=1.5$
   \end{block}
 \end{frame}
@@ -459,6 +716,66 @@
   \end{block}
 \end{frame}
 
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_h1m/Screen-GlobalParams-2Drzh1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_h1m/Screen-Executioner-2Drzh1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/2D_rz_h1m/Screen-Constraints-2Drzh1m}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results Comparison}
+  Upper plane is nx=1, ny=1; lower plane is nx=4, ny=4
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_rz_h1m/2D_rz_homog1mat_u_vs_x_05}\\
+			\tiny$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_rz_h1m/2D_rz_homog1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_rz_h1m/2D_rz_homog1mat_u_vs_x_15}\\
+			\tiny$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_rz_h1m/2D_rz_homog1mat_u_vs_x_20}\\
+			$t=2.0$
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_h1m/2D_rz_homog1mat_nx1ny1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_h1m/2D_rz_homog1mat_nx4ny4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=1, y=1}
+	\begin{center}
+		\includegraphics[scale=0.4]{figures/2D_rz_h1m/2D_rz_homog1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 % ###############################################################################
 \section{2D RZ LS Dep}
@@ -508,6 +825,65 @@
   \end{block}
 \end{frame}
 
+\begin{frame}\frametitle{Numerical Parameters}
+  	\begin{columns}
+		\column{0.32\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_ls1m/Screen-GlobalParams-2Drzls1m}
+			\end{center}
+		\column{0.66\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_ls1m/Screen-Executioner-2Drzls1m}
+			\end{center}
+	\end{columns}
+	\begin{center}
+	\includegraphics[scale=0.4]{figures/2D_rz_ls1m/Screen-Constraints-2Drzls1m}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Results Comparison}
+  	\begin{columns}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_rz_ls1m/2D_rz_ls1mat_u_vs_x_05}\\
+			\tiny$t=0.5$
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_rz_ls1m/2D_rz_ls1mat_u_vs_x_10}\\
+			$t=1.0$
+			\end{center}
+		\column{0.48\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.2]{figures/2D_rz_ls1m/2D_rz_ls1mat_u_vs_x_15}\\
+			\tiny$t=1.5$			
+			
+			\null
+			
+			\includegraphics[scale=0.2]{figures/2D_rz_ls1m/2D_rz_ls1mat_u_vs_x_20}\\
+			$t=2.0$
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{L2 Error Norms at Each Timestep}
+  	\begin{columns}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_ls1m/2D_rz_ls1mat_nx1ny1_L2_Errs}
+			\end{center}
+		\column{0.5\linewidth}
+			\begin{center}
+			\includegraphics[scale=0.4]{figures/2D_rz_ls1m/2D_rz_ls1mat_nx4ny4_L2_Errs}
+			\end{center}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]\frametitle{Mesh Refinement Effects on Error at x=1, y=1}
+	\begin{center}
+		\includegraphics[scale=0.5]{figures/2D_rz_ls1m/2D_rz_ls1mat_neumann_comp}
+	\end{center}
+\end{frame}
 
 \end{document}
 
