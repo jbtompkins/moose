@@ -1,3 +1,12 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+# Coupled XFEM/Level Set Modules Problem #0.0
+# Dimensionality:                                                2D
+# Coordinate System:                                             rz
+# Material Numbers/Types:          homogeneous 1 material, 2 region
+# Element Order:                                                1st
+# Level Set Interaction:        u and phi both solved independently
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
+
 [GlobalParams]
   order = FIRST
   family = LAGRANGE
@@ -114,6 +123,10 @@
     type = ParsedFunction
     value = '-0.5*(x+y) + 2.04 - 0.2*t'
   [../]
+  [./u_exact_func]
+    type = ParsedFunction
+    value = '(-100*x - 100*y + 400)*t + 400'
+  [../]
 []
 
 [Materials]
@@ -170,6 +183,20 @@
   [../]
 []
 
+[Postprocessors]
+  [./u_L2_Error]
+    type = NodalL2Error
+    function = u_exact_func
+    variable = u
+    boundary = 'right top'
+  [../]
+  [./phi_L2_Error]
+    type = NodalL2Error
+    function = phi_exact_func
+    variable = phi
+  [../]
+[]
+
 [Executioner]
   type = Transient
   solve_type = 'PJFNK'
@@ -192,8 +219,10 @@
 
 [Outputs]
   interval = 1
+  file_base = 'results/ls-xfem-2D_rz_homog1mat_out'
   execute_on = 'initial timestep_end'
   exodus = true
+  csv = true
   [./console]
     type = Console
     output_linear = true
