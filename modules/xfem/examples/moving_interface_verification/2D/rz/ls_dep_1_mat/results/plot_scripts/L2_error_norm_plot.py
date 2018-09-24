@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 ### Class Definitions
 
 def u_func(x,y,t):
-  return (-100.*x - 100.*y + 200.)*t + 400.
+  return (-100.*x - 100.*y + 400.)*t + 400.
 
 ### Data Extraction
 # Setup storage arrays
