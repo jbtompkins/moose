@@ -188,7 +188,6 @@
     type = NodalL2Error
     function = u_exact_func
     variable = u
-    boundary = 'right top'
   [../]
   [./phi_L2_Error]
     type = NodalL2Error

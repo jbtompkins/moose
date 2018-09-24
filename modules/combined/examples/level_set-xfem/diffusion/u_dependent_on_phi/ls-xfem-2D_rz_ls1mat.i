@@ -1,11 +1,10 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# Coupled XFEM/Level Set Modules Problem #0.2
+# Coupled XFEM/Level Set Modules Problem #0.1
 # Dimensionality:                                                2D
 # Coordinate System:                                             rz
 # Material Numbers/Types:  level set dependent 1 material, 2 region
 # Element Order:                                                1st
-# Level Set Interaction:  u material properties dependent on phi, phi velocity
-#   dependent on u
+# Level Set Interaction:     u material properties dependent on phi
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -51,8 +50,10 @@
 
 [AuxVariables]
   [./vel_x]
+    initial_condition = -0.2
   [../]
   [./vel_y]
+    initial_condition = -0.2
   [../]
 []
 
@@ -83,23 +84,6 @@
     variable = phi
   [../]
 []
-
-[AuxKernels]
-  [./coupled_phi_vel_x]
-    type = ParsedAux
-    variable = vel_x
-    args = 'u'
-    function = '-(0.5/200) * (u - 410) - 0.2'
-    #execute_on = 'LINEAR TIMESTEP_END'
-  [../]
-  [./coupled_phi_vel_y]
-    type = ParsedAux
-    variable = vel_x
-    args = 'u'
-    function = '-(0.5/200) * (u - 410) - 0.2'
-    #execute_on = 'LINEAR TIMESTEP_END'
-  [../]
-[] 
 
 [Constraints]
   [./xfem_u_constraint]
@@ -138,7 +122,11 @@
   [../]
   [./phi_exact_func]
     type = ParsedFunction
-    value = '-0.5*(x+y) + 1.7 -0.2*t'
+    value = '-0.5*(x+y) + 2.04 -0.2*t'
+  [../]
+  [./u_exact_func]
+    type = ParsedFunction
+    value = '(-100*x - 100*y + 400)*t + 400'
   [../]
 []
 
@@ -197,6 +185,19 @@
   [../]
 []
 
+[Postprocessors]
+  [./u_L2_Error]
+    type = NodalL2Error
+    function = u_exact_func
+    variable = u
+  [../]
+  [./phi_L2_Error]
+    type = NodalL2Error
+    function = phi_exact_func
+    variable = phi
+  [../]
+[]
+
 [Executioner]
   type = Transient
   solve_type = 'PJFNK'
@@ -219,8 +220,10 @@
 
 [Outputs]
   interval = 1
+  file_base = 'results/ls-xfem-2D_rz_ls1mat_out'
   execute_on = 'initial timestep_end'
   exodus = true
+  csv = true
   [./console]
     type = Console
     output_linear = true

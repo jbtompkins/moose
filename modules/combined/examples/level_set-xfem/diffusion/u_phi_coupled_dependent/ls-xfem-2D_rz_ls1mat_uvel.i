@@ -1,10 +1,11 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-# Coupled XFEM/Level Set Modules Problem #0.1
+# Coupled XFEM/Level Set Modules Problem #0.2
 # Dimensionality:                                                2D
 # Coordinate System:                                             rz
 # Material Numbers/Types:  level set dependent 1 material, 2 region
 # Element Order:                                                1st
-# Level Set Interaction:     u material properties dependent on phi
+# Level Set Interaction:  u material properties dependent on phi, phi velocity
+#   dependent on u
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -50,10 +51,8 @@
 
 [AuxVariables]
   [./vel_x]
-    initial_condition = -0.2
   [../]
   [./vel_y]
-    initial_condition = -0.2
   [../]
 []
 
@@ -84,6 +83,23 @@
     variable = phi
   [../]
 []
+
+[AuxKernels]
+  [./coupled_phi_vel_x]
+    type = ParsedAux
+    variable = vel_x
+    args = 'u'
+    function = '-(0.07/200) * (u - 410) - 0.2'
+    #execute_on = 'LINEAR TIMESTEP_END'
+  [../]
+  [./coupled_phi_vel_y]
+    type = ParsedAux
+    variable = vel_y
+    args = 'u'
+    function = '-(0.07/200) * (u - 410) - 0.2'
+    #execute_on = 'LINEAR TIMESTEP_END'
+  [../]
+[] 
 
 [Constraints]
   [./xfem_u_constraint]
@@ -120,9 +136,9 @@
     type = ParsedFunction
     value = '(-100*x+200)*t+400'
   [../]
-  [./phi_exact_func]
+  [./phi_ic_func]
     type = ParsedFunction
-    value = '-0.5*(x+y) + 2.04 -0.2*t'
+    value = '-0.5*(x+y) + 1.7'
   [../]
 []
 
@@ -176,7 +192,7 @@
 
   [./phi_ic]
     type = FunctionIC
-    function = phi_exact_func
+    function = phi_ic_func
     variable = phi
   [../]
 []
@@ -203,6 +219,7 @@
 
 [Outputs]
   interval = 1
+  file_base = 'results/ls-xfem-2D_rz_ls1mat_uvel_out'
   execute_on = 'initial timestep_end'
   exodus = true
   [./console]
