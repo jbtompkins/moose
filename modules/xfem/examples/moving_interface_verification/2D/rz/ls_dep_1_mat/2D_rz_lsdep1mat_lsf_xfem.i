@@ -6,6 +6,27 @@
 # Element Order:                                         1st
 # Companion Problems:                            #1.1.1.0.01
 # Interface Characteristics: u independent, prescribed level set function
+# Description:
+#   Transient 2D heat transfer problem in cylindrical coordinates designed with
+#   the Method of Manufactured Solutions. This problem was developed to verify
+#   XFEM performance on linear elements in the presence of a moving interface
+#   sweeping across the x-y coordinates of a system with thermal conductivity
+#   dependent upon the transient level set function. This problem can be
+#   exactly evaluated by FEM/Moose without the moving interface. Both the
+#   temperature and level set function are designed to be linear to attempt to
+#   minimize the error between the Moose/exact solution and XFEM results.
+# Results:
+#   The temperature at the bottom left boundary (x=1, y=1) exhibits the largest
+#   difference between the FEM/Moose solution and XFEM results. We present the
+#   XFEM results at this location with 10 digits of precision:
+#     Time   Expected Temperature   XFEM Calculated Temperature
+#      0.2                 440        440
+#      0.4                 480        479.9998717
+#      0.6                 520        519.9994963
+#      0.8                 560        559.9989217
+#      1.0                 600        599.9986735
+# IMPORTANT NOTE:
+#   When running this input file, add the --allow-test-objects tag!!!
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -20,8 +41,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 1
-  ny = 1
+  nx = 4
+  ny = 4
   xmin = 1.0
   xmax = 2.0
   ymin = 1.0
@@ -56,8 +77,9 @@
 
 [Kernels]
   [./heat_cond]
-    type = HeatConduction
+    type = MatDiffusion
     variable = u
+    D_name = 'diffusion_coefficient'
   [../]
   [./vol_heat_src]
     type = BodyForce
@@ -65,7 +87,7 @@
     function = src_func
   [../]
   [./mat_time_deriv]
-    type = MatTimeDerivative
+    type = TestMatTimeDerivative
     variable = u
     mat_prop_value = rhoCp
   [../]
@@ -180,8 +202,8 @@
   nl_abs_tol = 1.0e-9
 
   start_time = 0.0
-  dt = 0.1
-  end_time = 2.0
+  dt = 0.2
+  end_time = 1.0
   max_xfem_update = 1
 []
 

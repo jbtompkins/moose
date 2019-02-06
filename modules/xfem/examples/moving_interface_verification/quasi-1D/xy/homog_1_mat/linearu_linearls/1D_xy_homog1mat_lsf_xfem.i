@@ -6,14 +6,28 @@
 # Element Order:                                         1st
 # Companion Problems:                            #0.0.0.0.04
 # Interface Characteristics: u independent, prescribed linear level set function 
-# A simple single element heat transfer problem designed with the Method of 
-#   Manufactured Solutions to have a linear temperature profile. After the
-#   results of Problem #00.0 showed that the XFEM module does not have the
-#   capability to preserve 2nd order elements in enriched elements, this 
-#   problem was developed to further investigate differences in MOOSE
-#   solutions on linear elements and XFEM performance. Both the temperature
-#   solution and level set function are chosen to be linear to attempt to 
-#   minimize error between the MOOSE/exact solution and XFEM results.
+# Description:
+#   A simple transient heat transfer problem in Cartesian coordinates designed
+#   with the Method of Manufactured Solutions. After the results of Problem #00.0
+#   showed that the XFEM module does not have the capability to perserve 2nd order
+#   elements in enriched elements, this this problem was developed to
+#   verify XFEM performance in the presence of a moving interface for linear
+#   element models that can be exactly evaluated by FEM/Moose. Both the
+#   temperature solution and level set function are designed to be linear to
+#   attempt to minimize error between the Moose/exact solution and XFEM results.
+#   Thermal conductivity is a single, constant value at all points in the system.
+# Results:
+#   The temperature at the left boundary (x=0) exhibits the largest difference
+#   between the FEM/Moose solution and XFEM results. We present the XFEM results
+#   at this location with 10 digits of precision:
+#     Time    Expected Temperature    XFEM Calculated Temperature
+#      0.2                  440         440
+#      0.4                  480         480.0000064
+#      0.6                  520         520.0000323
+#      0.8                  560         560.0000896
+#      1.0                  600         600.0001870
+# IMPORTANT NOTE:
+#   When running this input file, add the --allow-test-objects tag!!!
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -24,7 +38,7 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 1
+  nx = 4
   ny = 1
   xmin = 0.0
   xmax = 1.0
@@ -60,8 +74,9 @@
 
 [Kernels]
   [./heat_cond]
-    type = HeatConduction
+    type = MatDiffusion
     variable = u
+    D_name = 'diffusion_coefficient'
   [../]
   [./vol_heat_src]
     type = BodyForce
@@ -69,7 +84,7 @@
     function = src_func
   [../]
   [./mat_time_deriv]
-    type = MatTimeDerivative
+    type = TestMatTimeDerivative
     variable = u
     mat_prop_value = rhoCp
   [../]
@@ -159,8 +174,8 @@
   nl_abs_tol = 1.0e-9
 
   start_time = 0.0
-  dt = 0.1
-  end_time = 2.0
+  dt = 0.2
+  end_time = 1.0
   max_xfem_update = 1
 []
 

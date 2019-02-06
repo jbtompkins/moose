@@ -6,6 +6,26 @@
 # Element Order:                                         1st
 # Companion Problems:                            #0.1.0.0.01
 # Interface Characteristics: u independent, prescribed level set function
+# Description:
+#   A simple transient heat transfer problem in cylindrical coordinates designed
+#   with the Method of Manufactured Solutions. This problem was developed to
+#   verify XFEM performance in the presence of a moving interface for linear
+#   element models that can be exactly evaluated by FEM/Moose. Both the
+#   temperature solution and level set function are designed to be linear to
+#   attempt to minimize error between the Moose/exact solution and XFEM results.
+#   Thermal conductivity is a single, constant value at all points in the system.
+# Results:
+#   The temperature at the left boundary (x=1) exhibits the largest difference
+#   between the FEM/Moose solution and XFEM results. We present the XFEM results
+#   at this location with 10 digits of precision:
+#     Time    Expected Temperature    XFEM Calculated Temperature
+#      0.2                  440         440
+#      0.4                  480         480.0008118
+#      0.6                  520         520.0038529
+#      0.8                  560         560.0089177
+#      1.0                  600         600.0133344
+# IMPORTANT NOTE:
+#   When running this input file, add the --allow-test-objects tag!!!
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 [GlobalParams]
@@ -20,7 +40,7 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 1
+  nx = 4
   ny = 1
   xmin = 1.0
   xmax = 2.0
@@ -56,8 +76,9 @@
 
 [Kernels]
   [./heat_cond]
-    type = HeatConduction
+    type = MatDiffusion
     variable = u
+    D_name = 'diffusion_coefficient'
   [../]
   [./vol_heat_src]
     type = BodyForce
@@ -65,7 +86,7 @@
     function = src_func
   [../]
   [./mat_time_deriv]
-    type = MatTimeDerivative
+    type = TestMatTimeDerivative
     variable = u
     mat_prop_value = rhoCp
   [../]
@@ -155,8 +176,8 @@
   nl_abs_tol = 1.0e-9
 
   start_time = 0.0
-  dt = 0.1
-  end_time = 2.0
+  dt = 0.2
+  end_time = 1.0
   max_xfem_update = 1
 []
 
