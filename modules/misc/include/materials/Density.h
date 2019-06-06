@@ -30,6 +30,8 @@ protected:
 
   const Real _orig_density;
   MaterialProperty<Real> & _density;
+
+  std::string _base_name;
 };
 
 template <>
