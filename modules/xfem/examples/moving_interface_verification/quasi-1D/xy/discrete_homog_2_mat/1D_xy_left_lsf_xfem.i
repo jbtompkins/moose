@@ -85,7 +85,6 @@
     type = XFEMSingleVariableConstraint
     variable = u
     geometric_cut_userobject = 'level_set_cut_uo'
-    jump_flux = jump_flux_func
     use_penalty = true
     alpha = 1e5
   [../]
@@ -95,32 +94,20 @@
   [./src_func]
     type = ParsedFunction
     value = 'phi:=(0.75-x-0.001*t);
-        i:=(0.75-0.001*t);
         if (phi>=0,
             10*(8-x),
-            (7/(1-i))*((i-2)*x + (8-7*i)) )'
-#'            7*((1/(0.25 + x + 0.001*t))*(8 - 2*x + (x-7)*(0.75 - x - 0.001*t))) )'
+            10*(8-x) )'
   [../]
   [./right_du_func]
     type = ParsedFunction
-    value = 'i:=(0.75-0.001*t);
-        (2.0/(1-i))*(-5+5*i+i*t-2*t)'
-#'        (2.0/(0.25 + x + 0.001*t))*(-5 - 2*t +(5+t)*(0.75 - x - 0.001*t))'
+    value = '-20*(5+t)'
   [../]
-  [./exact_u_func]
+  [./left_exact_u_func]
     type = ParsedFunction
     value = 'phi:=(0.75-x-0.001*t);
-        i:=(0.75-0.001*t);
         if (phi>=0,
             605 - 5*x + t*(8-x),
-            (1/(1-i))*((-5+5*i+i*t-2*t)*x + (605-605*i+8*t-7*t*i)) )'
-  [../]
-  [./jump_flux_func]
-    type = ParsedFunction
-    value = 'i:=(0.75-0.001*t);
-        k_1:=(20.0);
-        k_2:=(2.0);
-        k_1*(5+t) + (k_2/(1-i))*(-5+5*i+i*t-2*t)'
+            605 - 5*x + t*(8-x) )'
   [../]
 
   [./ls_func]
@@ -133,12 +120,14 @@
   [./mat_time_deriv_prop]
     type = GenericConstantMaterial
     prop_names = 'A_rhoCp B_rhoCp'
-    prop_values = '10 7'
+    prop_values = '10 10'
+#    prop_values = '10 7'
   [../]
   [./therm_cond_prop]
     type = GenericConstantMaterial
     prop_names = 'A_diffusion_coefficient B_diffusion_coefficient'
-    prop_values = '20.0 2.0'
+    prop_values = '20.0 20.0'
+#    prop_values = '20.0 2.0'
   [../]
 
   [./combined_rhoCp]
@@ -162,7 +151,7 @@
     type = FunctionDirichletBC
     variable = u
     boundary = 'left'
-    function = exact_u_func
+    function = left_exact_u_func
   [../]
   [./right_du]
     type = FunctionNeumannBC
