@@ -16,12 +16,12 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 8
-  ny = 4
+  nx = 4
+  ny = 1
   xmin = 0.0
   xmax = 5.75
   ymin = 0.0
-  ymax = 12.0
+  ymax = 1.0
   elem_type = QUAD4
 []
 
@@ -81,19 +81,6 @@
 []
 
 [Functions]
-#  [./left_u_func]
-#    type = PiecewiseBilinear
-#    axis = 1
-#    x = '0.0  3.0  6.0  9.0  12.0'
-#    y = '0.0  1.0'
-#    z = '620.0  619.8  619.5  619.05  618.35
-#         620.0  619.8  619.5  619.05  618.35'
-#  [../]
-  [./left_u_func]
-    type = PiecewiseLinear
-    x = '0.0  3.0  6.0  9.0  12.0'
-    y = '620.0  619.8  619.5  619.05  618.35'
-  [../]
   [./ls_func]
     type = ParsedFunction
     value = '3.5 - x - 0.01*t'
@@ -118,9 +105,9 @@
 
 [BCs]
   [./left_u]
-    type = FunctionDirichletBC
+    type = DirichletBC
     variable = u
-    function = left_u_func
+    value = 620.0
     boundary = 'left'
   [../]
   [./right_u]
@@ -152,15 +139,14 @@
   nl_abs_tol = 1.0e-9
 
   start_time = 0.0
-  end_time = 50.0
   dt = 25.0
+  num_steps = 2
 
   max_xfem_update = 2
 []
 
 [Outputs]
-  interval = 1
-  execute_on = 'initial timestep_end' # TODO may need to turn this off
+  execute_on = timestep_end
   exodus = true
   [./console]
     type = Console

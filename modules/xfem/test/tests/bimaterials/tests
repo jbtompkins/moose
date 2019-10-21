@@ -31,4 +31,14 @@
     design = 'LevelSetCutUserObject.md XFEMSingleVariableConstraint.md'
     issues = '#10421'
   [../]
+  [./bimaterial_parallel_init]
+    type = Exodiff
+    input = bimaterial_parallel_init.i
+    exodiff = 'bimaterial_parallel_init_out.e bimaterial_parallel_init_out.e-s002'
+    map = false
+    unique_id = true
+    requirement = ''
+    design = ''
+    issues = ''
+  [../]
 []
