@@ -11,31 +11,31 @@
 
 #include "GeometricCutUserObject.h"
 
-// Forward declarations
-class LevelSetCutUserObject;
+// Forward Declarations
+class LevelSetBoundaryCutUserObject;
 
-template <>
-InputParameters validParams<LevelSetCutUserObject>();
+template<>
+InputParameters validParams<LevelSetBoundaryCutUserObject>();
 
-class LevelSetCutUserObject : public GeometricCutUserObject
+class LevelSetBoundaryCutUserObject : public GeometricCutUserObject
 {
 public:
-  LevelSetCutUserObject(const InputParameters & parameters);
+  LevelSetBoundaryCutUserObject(const InputParameters & Parameters);
 
   virtual bool cutElementByGeometry(const Elem * elem,
                                     std::vector<Xfem::CutEdge> & cut_edges,
-                                    std::vector<Xfem::CutNode> & cut_nodes,
-                                    Real time) const override;
+				    std::vector<Xfem::CutNode> & cut_nodes,
+				    Real time) const override;
   virtual bool cutElementByGeometry(const Elem * elem,
-                                    std::vector<Xfem::CutFace> & cut_faces,
-                                    Real time) const override;
+				    std::vector<Xfem::CutFace> & cut_faces,
+				    Real time) const override;
 
   virtual bool cutFragmentByGeometry(std::vector<std::vector<Point>> & frag_edges,
-                                     std::vector<Xfem::CutEdge> & cut_edges,
-                                     Real time) const override;
+				     std::vector<Xfem::cutEdge> & cut_edges,
+				     Real time) const override;
   virtual bool cutFragmentByGeometry(std::vector<std::vector<Point>> & frag_faces,
-                                     std::vector<Xfem::CutFace> & cut_faces,
-                                     Real time) const override;
+				     std::vector<Xfem::CutFace> & cut_faces,
+				     Real time) const override;
 
   virtual const std::vector<Point>
   getCrackFrontPoints(unsigned int num_crack_front_points) const override;
