@@ -251,14 +251,14 @@
     levelset_positive_base = 'A'
     levelset_negative_base = 'B'
     level_set_var = ls
-    prop_name = stress
+    prop_names = stress
   [../]
   [./combined_dstressdstrain]
     type = LevelSetBiMaterialRankFour
     levelset_positive_base = 'A'
     levelset_negative_base = 'B'
     level_set_var = ls
-    prop_name = Jacobian_mult
+    prop_names = Jacobian_mult
   [../]
 []
 

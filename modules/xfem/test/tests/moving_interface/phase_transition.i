@@ -110,7 +110,7 @@
     levelset_positive_base = 'A'
     levelset_negative_base = 'B'
     level_set_var = ls
-    prop_name = diffusion_coefficient
+    prop_names = diffusion_coefficient
   [../]
 []
 

@@ -33,9 +33,9 @@ protected:
   virtual void assignQpPropertiesForLevelSetNegative() override;
 
   /// RankFourTensor Material properties for the two separate materials in the bi-material system
-  std::vector<const MaterialProperty<RankFourTensor> *> _bimaterial_material_prop;
+  std::vector<std::vector<const MaterialProperty<RankFourTensor> *>> _bimaterial_material_props;
 
   /// Global RankFourTensor material property (switch bi-material diffusion coefficient based on level set values)
-  MaterialProperty<RankFourTensor> & _material_prop;
+  std::vector<MaterialProperty<RankFourTensor> *> _material_props;
 };
 

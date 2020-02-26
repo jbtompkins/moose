@@ -45,7 +45,8 @@ protected:
   const std::string _base_name;
 
   /// Property name
-  std::string _prop_name;
+  std::vector<std::string> _prop_names;
+  unsigned int _num_props;
 
   /// shared pointer to XFEM
   std::shared_ptr<XFEM> _xfem;

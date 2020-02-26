@@ -169,14 +169,7 @@
     levelset_positive_base = 'A'
     levelset_negative_base = 'B'
     level_set_var = phi
-    prop_name = rhoCp
-  [../]
-  [./combined_diffusion_coefficient]
-    type = LevelSetBiMaterialReal
-    levelset_positive_base = 'A'
-    levelset_negative_base = 'B'
-    level_set_var = phi
-    prop_name = diffusion_coefficient
+    prop_names = 'rhoCp diffusion_coefficient'
   [../]
 []
 

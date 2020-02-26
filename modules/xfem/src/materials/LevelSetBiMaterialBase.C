@@ -27,14 +27,15 @@ validParams<LevelSetBiMaterialBase>()
                                        "Base name for the material in level set negative region.");
   params.addParam<std::string>("base_name",
                                "Base name for the computed material property (optional)");
-  params.addRequiredParam<std::string>("prop_name", "Name for the computed material property.");
+  params.addRequiredParam<std::vector<std::string>>("prop_names",
+                                                    "Names for the computed material properties.");
   return params;
 }
 
 LevelSetBiMaterialBase::LevelSetBiMaterialBase(const InputParameters & parameters)
   : Material(parameters),
     _base_name(isParamValid("base_name") ? getParam<std::string>("base_name") + "_" : ""),
-    _prop_name(getParam<std::string>("prop_name")),
+    _prop_names(getParam<std::vector<std::string>>("prop_names")),
     _level_set_var_number(_subproblem
                               .getVariable(_tid,
                                            parameters.get<VariableName>("level_set_var"),
@@ -51,6 +52,8 @@ LevelSetBiMaterialBase::LevelSetBiMaterialBase(const InputParameters & parameter
     mooseError("Problem casting _subproblem to FEProblemBase in XFEMMaterialStateMarkerBase");
 
   _xfem = MooseSharedNamespace::dynamic_pointer_cast<XFEM>(fe_problem->getXFEM());
+
+  _num_props = _prop_names.size();
 }
 
 void

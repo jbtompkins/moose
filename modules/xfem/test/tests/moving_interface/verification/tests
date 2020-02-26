@@ -29,7 +29,7 @@
     unique_id = true
     allow_test_objects = True
     requirement = 'The XFEM module shall accurately solve 1D, xy problems with a moving interface separating two discrete materials prescribed by a user defined level set function with problem results verified using the Method of Manufactured Solutions.'
-    design = 'LevelSetCutUserObject.md XFEMSingleVariableConstraint.md'
+    design = 'LevelSetBiMaterialReal.md LevelSetCutUserObject.md XFEMSingleVariableConstraint.md'
     issues = '#13756'
   [../]
   [./1D_rz_homog1mat]

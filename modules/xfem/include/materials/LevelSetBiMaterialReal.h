@@ -32,9 +32,9 @@ protected:
   virtual void assignQpPropertiesForLevelSetNegative();
 
   /// Real Material properties for the two separate materials in the bi-material system
-  std::vector<const MaterialProperty<Real> *> _bimaterial_material_prop;
+  std::vector<std::vector<const MaterialProperty<Real> *>> _bimaterial_material_props;
 
   /// Global Real material property (switch bi-material diffusion coefficient based on level set values)
-  MaterialProperty<Real> & _material_prop;
+  std::vector<MaterialProperty<Real> *> _material_props;
 };
 
