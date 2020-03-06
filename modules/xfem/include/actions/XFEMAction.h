@@ -38,5 +38,18 @@ protected:
   std::vector<VariableName> _displacements;
   std::vector<BoundaryName> _cut_off_bc;
   Real _cut_off_radius;
+  bool _setup_variable_constraints;
+  std::vector<VariableName> _constraint_variables; // TODO Is this right?
+  std::vector<UserObjectName> _constraint_cut_userobjects;
+  bool _define_continuity_method;
+  std::vector<bool> _penalty_method_use;
+  bool _define_constraint_alphas;
+  std::vector<Real> _constraint_alphas;
+  bool _define_constraint_jumps;
+  std::vector<FunctionName> _constraint_jumps;
+  bool _define_constraint_flux_jumps;
+  std::vector<FunctionName> _constraint_flux_jumps;
+  bool _use_displaced_mesh_constraint;
+  std::vector<bool> _displaced_mesh_constraint;
 };
 

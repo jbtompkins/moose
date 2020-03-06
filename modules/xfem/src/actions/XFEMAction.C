@@ -59,6 +59,9 @@ validParams<XFEMAction>()
   params.addParam<bool>("use_crack_growth_increment", false, "Use fixed crack growth increment");
   params.addParam<Real>("crack_growth_increment", 0.1, "Crack growth increment");
   params.addParam<bool>("use_crack_tip_enrichment", false, "Use crack tip enrichment functions");
+  params.addParam<bool>("define_variable_constraints",
+                        false,
+			"Define continuity constraints for variables in the XFEM action.");
   params.addParam<UserObjectName>("crack_front_definition",
                                   "The CrackFrontDefinition user object name (only "
                                   "needed if 'use_crack_tip_enrichment=true')");
@@ -75,6 +78,27 @@ validParams<XFEMAction>()
   params.addParam<Real>("cut_off_radius",
                         "The cut off radius of crack tip enrichment functions (only needed if "
                         "'use_crack_tip_enrichment=true')");
+  params.addParam<bool>("define_variable_constraints",
+                        false,
+			"XFEMSingleVariableConstraint defined in XFEM action.");
+  params.addParam<std::vector<VariableName>>("constraint_variables",
+                                             "Variables to where constraints are applied.");
+  params.addParam<std::vector<UserObjectName>>("constraint_geometric_cut_userobjects",
+                                               "UserObjects defining an XFEM cut.");
+  params.addParam<std::vector<bool>>("constraint_use_penalty_method",
+                                     "Use penalty method instead of Nitsche formulation for "
+				     "constraint.");
+  params.addParam<std::vector<Real>>("constraint_alphas",
+                                     "Stabilization parameter in Nitsche method and penalty "
+				     "factor in penalty method.");
+  params.addParam<std::vector<FunctionName>>("constraint_value_jumps",
+                                             "Jump in the value of the variable at the "
+					     "interface.");
+  params.addParam<std::vector<FunctionName>>("constraint_flux_jumps",
+                                             "Jump in the variable's flux at the interface.");
+  params.addParam<std::vector<bool>>("use_displaced_mesh_constraint",
+                                    "Whether the constraint should be applied to the "
+				    "displaced mesh.");
   return params;
 }
 
@@ -85,7 +109,8 @@ XFEMAction::XFEMAction(InputParameters params)
     _xfem_cut_plane(false),
     _xfem_use_crack_growth_increment(getParam<bool>("use_crack_growth_increment")),
     _xfem_crack_growth_increment(getParam<Real>("crack_growth_increment")),
-    _use_crack_tip_enrichment(getParam<bool>("use_crack_tip_enrichment"))
+    _use_crack_tip_enrichment(getParam<bool>("use_crack_tip_enrichment")),
+    _setup_variable_constraints(getParam<bool>("define_variable_constraints"))
 {
   _order = "CONSTANT";
   _family = "MONOMIAL";
@@ -124,6 +149,46 @@ XFEMAction::XFEMAction(InputParameters params)
       _cut_off_radius = getParam<Real>("cut_off_radius");
     else
       mooseError("To add crack tip enrichment, cut_off_radius must be provided.");
+  }
+  if (_setup_variable_constraints)
+  {
+    _constraint_variables = getParam<std::vector<VariableName>>("constraint_variables");
+    _constraint_cut_userobjects = getParam<std::vector<UserObjectName>>("constraint_geometric_cut_userobjects");
+    if (isParamValid("constraint_use_penalty_method"))
+    {
+      _define_continuity_method = true;
+      _penalty_method_use = getParam<std::vector<bool>>("constraint_use_penalty_method");
+    }
+    else
+      _define_continuity_method = false;
+    if (isParamValid("constraint_alphas"))
+    {
+      _define_constraint_alphas = true;
+      _constraint_alphas = getParam<std::vector<Real>>("constraint_alphas");
+    }
+    else
+      _define_constraint_alphas = false;
+    if (isParamValid("constraint_value_jumps"))
+    {
+      _define_constraint_jumps = true;
+      _constraint_jumps = getParam<std::vector<FunctionName>>("constraint_value_jumps");
+    }
+    else
+      _define_constraint_jumps = false;
+    if (isParamValid("constraint_flux_jumps"))
+    {
+      _define_constraint_flux_jumps = true;
+      _constraint_flux_jumps = getParam<std::vector<FunctionName>>("constraint_flux_jumps");
+    }
+    else
+      _define_constraint_flux_jumps = false;
+    if (isParamValid("use_displaced_mesh_constraint"))
+    {
+      _use_displaced_mesh_constraint = true;
+      _displaced_mesh_constraint = getParam<std::vector<bool>>("use_displaced_mesh_constraint");
+    }
+    else
+      _use_displaced_mesh_constraint = false;
   }
 }
 
@@ -270,5 +335,26 @@ XFEMAction::act()
     params.set<AuxVariableName>("variable") = "xfem_cut2_normal_z";
     params.set<MooseEnum>("quantity") = "normal_z";
     _problem->addAuxKernel("XFEMCutPlaneAux", "xfem_cut2_normal_z", params);
+  }
+  else if (_current_task == "add_constraint" && _setup_variable_constraints)
+  {
+    for (unsigned int i = 0; i < _constraint_variables.size(); ++i)
+    {
+      InputParameters params = _factory.getValidParams("XFEMSingleVariableConstraint");
+      //TODO params.set<NonlinearVariableName>("variable") = _constraint_variables[i];
+      params.set<VariableName>("variable") = _constraint_variables[i];
+      params.set<UserObjectName>("geometric_cut_userobject") = _constraint_cut_userobjects[i];
+      if (_define_continuity_method)
+        params.set<bool>("use_penalty") = _penalty_method_use[i];
+      if (_define_constraint_alphas)
+        params.set<Real>("alpha") = _constraint_alphas[i];
+      if (_define_constraint_jumps)
+        params.set<FunctionName>("jump") = _constraint_jumps[i];
+      if (_define_constraint_flux_jumps)
+	params.set<FunctionName>("jump_flux") = _constraint_flux_jumps[i];
+      if (_use_displaced_mesh_constraint)
+        params.set<bool>("use_displaced_mesh") = _displaced_mesh_constraint[i];
+      _problem->addConstraint("XFEMSingleVariableConstraint", _constraint_variables[i] + str(_constraint_cut_userobjects[i]) + "_constraint", params); // TODO str doesn't work like that in C++, change it and make this pass formatting!
+    }
   }
 }
