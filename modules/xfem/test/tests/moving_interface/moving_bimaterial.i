@@ -12,6 +12,11 @@
 [XFEM]
   qrule = volfrac
   output_cut_plane = true
+  define_variable_constraints = true
+  constraint_variables = 'disp_x disp_y'
+  constraint_geometric_cut_userobjects = 'level_set_cut_uo level_set_cut_uo'
+  use_displaced_mesh_constraint = false
+  constraint_alphas = '1e8 1e8'
 []
 
 [UserObjects]
@@ -184,23 +189,6 @@
     index_i = 0
     index_j = 1
     variable = b_strain_xy
-  [../]
-[]
-
-[Constraints]
-  [./dispx_constraint]
-    type = XFEMSingleVariableConstraint
-    use_displaced_mesh = false
-    variable = disp_x
-    alpha = 1e8
-    geometric_cut_userobject = 'level_set_cut_uo'
-  [../]
-  [./dispy_constraint]
-    type = XFEMSingleVariableConstraint
-    use_displaced_mesh = false
-    variable = disp_y
-    alpha = 1e8
-    geometric_cut_userobject = 'level_set_cut_uo'
   [../]
 []
 

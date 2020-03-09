@@ -39,6 +39,8 @@ registerMooseAction("XFEMApp", XFEMAction, "add_kernel");
 
 registerMooseAction("XFEMApp", XFEMAction, "add_bc");
 
+registerMooseAction("XFEMApp", XFEMAction, "add_constraint");
+
 template <>
 InputParameters
 validParams<XFEMAction>()
@@ -59,9 +61,6 @@ validParams<XFEMAction>()
   params.addParam<bool>("use_crack_growth_increment", false, "Use fixed crack growth increment");
   params.addParam<Real>("crack_growth_increment", 0.1, "Crack growth increment");
   params.addParam<bool>("use_crack_tip_enrichment", false, "Use crack tip enrichment functions");
-  params.addParam<bool>("define_variable_constraints",
-                        false,
-			"Define continuity constraints for variables in the XFEM action.");
   params.addParam<UserObjectName>("crack_front_definition",
                                   "The CrackFrontDefinition user object name (only "
                                   "needed if 'use_crack_tip_enrichment=true')");
@@ -80,9 +79,11 @@ validParams<XFEMAction>()
                         "'use_crack_tip_enrichment=true')");
   params.addParam<bool>("define_variable_constraints",
                         false,
-			"XFEMSingleVariableConstraint defined in XFEM action.");
-  params.addParam<std::vector<VariableName>>("constraint_variables",
-                                             "Variables to where constraints are applied.");
+                        "Define continuity constraints (as XFEMSingleVariableConstraints) in the "
+			"XFEM action.");
+  params.addParam<std::vector<NonlinearVariableName>>("constraint_variables",
+                                                      "Variables to where constraints are "
+						      "applied.");
   params.addParam<std::vector<UserObjectName>>("constraint_geometric_cut_userobjects",
                                                "UserObjects defining an XFEM cut.");
   params.addParam<std::vector<bool>>("constraint_use_penalty_method",
@@ -96,9 +97,9 @@ validParams<XFEMAction>()
 					     "interface.");
   params.addParam<std::vector<FunctionName>>("constraint_flux_jumps",
                                              "Jump in the variable's flux at the interface.");
-  params.addParam<std::vector<bool>>("use_displaced_mesh_constraint",
-                                    "Whether the constraint should be applied to the "
-				    "displaced mesh.");
+  params.addParam<bool>("use_displaced_mesh_constraint",
+                        "Whether the constraint should be applied to the "
+			"displaced mesh.");
   return params;
 }
 
@@ -152,7 +153,7 @@ XFEMAction::XFEMAction(InputParameters params)
   }
   if (_setup_variable_constraints)
   {
-    _constraint_variables = getParam<std::vector<VariableName>>("constraint_variables");
+    _constraint_variables = getParam<std::vector<NonlinearVariableName>>("constraint_variables");
     _constraint_cut_userobjects = getParam<std::vector<UserObjectName>>("constraint_geometric_cut_userobjects");
     if (isParamValid("constraint_use_penalty_method"))
     {
@@ -184,11 +185,11 @@ XFEMAction::XFEMAction(InputParameters params)
       _define_constraint_flux_jumps = false;
     if (isParamValid("use_displaced_mesh_constraint"))
     {
-      _use_displaced_mesh_constraint = true;
-      _displaced_mesh_constraint = getParam<std::vector<bool>>("use_displaced_mesh_constraint");
+      _define_use_displaced_mesh_constraint = true;
+      _displaced_mesh_constraint = getParam<bool>("use_displaced_mesh_constraint");
     }
     else
-      _use_displaced_mesh_constraint = false;
+      _define_use_displaced_mesh_constraint = false;
   }
 }
 
@@ -341,8 +342,7 @@ XFEMAction::act()
     for (unsigned int i = 0; i < _constraint_variables.size(); ++i)
     {
       InputParameters params = _factory.getValidParams("XFEMSingleVariableConstraint");
-      //TODO params.set<NonlinearVariableName>("variable") = _constraint_variables[i];
-      params.set<VariableName>("variable") = _constraint_variables[i];
+      params.set<NonlinearVariableName>("variable") = _constraint_variables[i];
       params.set<UserObjectName>("geometric_cut_userobject") = _constraint_cut_userobjects[i];
       if (_define_continuity_method)
         params.set<bool>("use_penalty") = _penalty_method_use[i];
@@ -352,9 +352,9 @@ XFEMAction::act()
         params.set<FunctionName>("jump") = _constraint_jumps[i];
       if (_define_constraint_flux_jumps)
 	params.set<FunctionName>("jump_flux") = _constraint_flux_jumps[i];
-      if (_use_displaced_mesh_constraint)
-        params.set<bool>("use_displaced_mesh") = _displaced_mesh_constraint[i];
-      _problem->addConstraint("XFEMSingleVariableConstraint", _constraint_variables[i] + str(_constraint_cut_userobjects[i]) + "_constraint", params); // TODO str doesn't work like that in C++, change it and make this pass formatting!
+      if (_define_use_displaced_mesh_constraint)
+        params.set<bool>("use_displaced_mesh") = _displaced_mesh_constraint;
+      _problem->addConstraint("XFEMSingleVariableConstraint", _constraint_variables[i] + _constraint_cut_userobjects[i] + "_constraint", params);
     }
   }
 }
